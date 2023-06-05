@@ -26,21 +26,21 @@ namespace Dogs.Caches
 
         public async Task<TValue> GetAsync<TValue>(string key, TValue defaultValue)
         {
-            try
-            {
-                TValue? result = JsonConvert.DeserializeObject<TValue>(Encoding.UTF8.GetString(await _cache.GetAsync(key)));
+            byte[]? bytesOfKey = await _cache.GetAsync(key);
 
-                if (result == null)
-                {
-                    return defaultValue;
-                }
-
-                return result;
-            }
-            catch
+            if (bytesOfKey == null)
             {
                 return defaultValue;
             }
+
+            TValue? result = JsonConvert.DeserializeObject<TValue>(Encoding.UTF8.GetString(bytesOfKey));
+
+            if (result == null)
+            {
+                return defaultValue;
+            }
+
+            return result;
         }
 
         public Task RemoveAsync(string key)

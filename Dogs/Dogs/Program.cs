@@ -53,6 +53,8 @@ namespace Dogs
                 app.UseSwaggerUI();
             }
 
+            app.UseLoadStatic();
+
             app.UseHttpsRedirection();
 
             app.UseRequestBottleNeck();
